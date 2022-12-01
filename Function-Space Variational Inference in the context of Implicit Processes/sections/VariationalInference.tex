@@ -1,0 +1,24 @@
+
+  \begin{frame}{Variational Inference}
+     \textbf{Idea.} Approximate the posterior \(P(\mathbf z | \mathbf X, \mathbf y)\) with a \textbf{\alert{simpler distribution}} \(Q(\mathbf z)\) and ensure that
+     \(
+        KL\Big(Q(\mathbf z)\mid  P(\mathbf z | \mathbf X, \mathbf y)  \Big)
+     \)
+     is close to \(0\).
+
+     Formally,
+    \begin{align*}
+    \only<1>{
+        Q^\star(\mathbf z) &= \argmin_{Q \in \mathcal{Q}}\, KL\Big(Q(\mathbf z)  \mid P(\mathbf z | \mathbf X, \mathbf y)\Big)\\
+        &= \argmax_{Q \in \mathcal{Q}} \,\mathbb{E}_{Q(\mathbf z)}\Big[ \log P(\mathbf y | \mathbf X, \mathbf z) \Big] - KL\Big(Q(\mathbf z) \mid P(\mathbf z) \Big)\,.\\
+    }
+    \only<2>{
+        Q^\star(\mathbf z) &= \argmin_{Q \in \mathcal{Q}}\, KL\Big(Q(\mathbf z)  \mid P(\mathbf z | \mathbf X, \mathbf y)\Big)\\
+        &= \argmax_{Q \in \mathcal{Q}} \,\underbrace{\mathbb{E}_{Q(\mathbf z)}\Big[ \log P(\mathbf y | \mathbf X, \mathbf z) \Big] - KL\Big(Q(\mathbf z) \mid P(\mathbf z) \Big)}_{\text{\textbf{ELBO}}}\,.\\
+    }
+    \only<3>{
+        Q^\star(\mathbf z) &= \argmin_{Q \in \mathcal{Q}}\, KL\Big(Q(\mathbf z)  \mid P(\mathbf z | \mathbf X, \mathbf y)\Big)\\
+        &= \argmax_{Q \in \mathcal{Q}} \,\underbrace{\mathbb{E}_{Q(\mathbf z)}\Big[ \log P(\mathbf y | \mathbf X, \mathbf z) \Big]}_{\text{\textbf{Data Fitting term}}} - \underbrace{KL\Big(Q(\mathbf z) \mid P(\mathbf z) \Big)}_{\text{\textbf{Regularizer}}}\,.\\
+    }
+    \end{align*}
+ \end{frame}

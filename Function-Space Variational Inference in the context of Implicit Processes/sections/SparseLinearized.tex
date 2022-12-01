@@ -1,0 +1,48 @@
+
+    \begin{frame}{Linearized model with inducing points}
+        We propose to use the \textbf{\alert{linearized model}} among with the usage of \textbf{\alert{inducing points}} to, simultaneusly,
+        \begin{enumerate}
+            \item \textbf{Avoid using Context points} to approximate the KL divergence between stochastic processes
+            \item \textbf{Avoid using a discriminator} for the KL divergence between IPs.
+        \end{enumerate}
+
+        \textbf{Features}:
+        \begin{enumerate}
+            \item The variational distribution over the inducing points \(Q(\bm u)\) is Gaussian.
+            \item Both \(P(\bm u)\) and \(P(\mathbf f| \bm u)\) are approximated using the linearized model rather than samples from the IP.
+        \end{enumerate}
+    \end{frame}
+
+    \begin{frame}
+        \textbf{How are \(P(\bm u)\) and \(P(\mathbf f| \bm u)\) approximated?}
+
+        Consider the concatenation of the input features and the inducing locations \((\mathbf X, \mathbf Z)\), and the linearized approximation of the prior evaluated on them,
+        \[
+         \hat{f}\big((\mathbf X, \mathbf Z), \bm \theta\big) = f\big((\mathbf X, \mathbf Z), \bm m \big) + \mathcal{J}\big((\mathbf X, \mathbf Z), \bm m\big)(\bm \theta - \bm m)\,.
+        \]
+        Then, \(\hat{f}\big((\mathbf X, \mathbf Z), \bm \theta\big)\) is a Gaussian process,
+        \[
+        \begin{aligned}
+             \hat{P}(\mathbf f, \bm u) = \mathcal{N}\left( 
+                \begin{pmatrix}
+                    f(\mathbf X, \bm m) \\ f(\mathbf Z, \bm m)
+                \end{pmatrix},
+                \begin{pmatrix}
+                    \mathcal{J}(\mathbf X, \bm m) \bm S \mathcal{J}(\mathbf X, \bm m)^T &  \mathcal{J}(\mathbf{X}, \bm m) \bm S \mathcal{J}(\mathbf Z, \bm m)^T \\
+                    \mathcal{J}(\mathbf Z, \bm m) \bm S \mathcal{J}(\mathbf X, \bm m)^T &  \mathcal{J}(\mathbf Z, \bm m) \bm S \mathcal{J}(\mathbf Z, \bm m)^T
+                \end{pmatrix}
+             \right)\,.
+        \end{aligned}
+        \]    
+        where \(\hat{P}(\mathbf f| \bm u)\) and \(\hat{P}(\bm u)\) can be easily computed.
+    \end{frame}
+    \begin{frame}
+        The variational posterior distribution can be computed in closed form to be Gaussian
+        \[ 
+            Q(\mathbf f) = \int_{\bm u} \hat{P}(\mathbf f | \bm u)Q(\bm u) = \mathcal{N}(\bm \mu, \bm \Sigma)\,.
+        \]
+        The ELBO can be easily computed for regression and approximated for classification
+        \[
+        \mathcal{L} = \mathbb{E}_{Q( \mathbf f)}\Big[ \log P(\mathbf y | \mathbf X,  \mathbf f) \Big] - KL\Big(Q(\bm u) \mid \hat{P}(\bm u) \Big)\,.
+        \]
+    \end{frame}

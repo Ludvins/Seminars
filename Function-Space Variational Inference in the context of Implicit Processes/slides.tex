@@ -1,0 +1,129 @@
+% Slides for Seminar on Function-Space Variational Inference in the context of Implicit Processes.
+% November 30, 2022
+
+% Compile using XeLatex
+
+\documentclass[10pt, aspectratio=149]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
+
+
+% IMPORTS and PACKAGES
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{amsthm}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usepackage{multirow}
+\setbeamercovered{transparent}
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+\usepackage{mathtools}
+\usefonttheme{professionalfonts} % required for mathspec
+\usepackage{mathspec}
+\setsansfont[BoldFont={Fira Sans}]{Fira Sans Light}
+\usepackage{cancel}
+\usepackage{bm}
+
+% SEMINAR INFORMATION
+
+\title{Function-Space Variational Inference in the context of Implicit Processes}
+\subtitle{Machine Learning Group}
+\date{\today}
+\author{Luis Antonio Ortega Andrés}
+\institute{Autonomous University of Madrid}
+
+% Change Metropolis progress bar width
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+
+% Change separation in TOC
+\makeatletter
+\patchcmd{\beamer@sectionintoc}
+  {\vfill}
+  {\vskip 1.8\itemsep}
+  {}
+  {}
+\makeatother  
+
+
+
+
+% DOCUMENT
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Motivation}
+    \begin{center}
+    	\includegraphics<1>[width=0.7\textwidth]{imgs/intro_1.pdf}\includegraphics<2>[width=0.7\textwidth]{imgs/intro_2.pdf}\includegraphics<3>[width=0.7\textwidth]{imgs/intro_3.pdf}\includegraphics<4>[width=0.7\textwidth]{imgs/intro_4.pdf}\includegraphics<5->[width=0.7\textwidth]{imgs/intro_5.pdf}
+    
+    \only<1>{\textbf{Objective}: Make predictions over unknown points.}
+    \only<2>{\textbf{Procedure}: Learn a function that explain the visible data.}
+    \only<3>{\textbf{Outcome}: The function can be used to predict.}
+    \only<4>{\textbf{Question}: How confident is the prediction?}
+    \only<5->{\textbf{Answer}: Bayesian approach.}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Overview}
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+            \tableofcontents[ 
+            sections={1-4}
+            ] 
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \tableofcontents[sections={5-7}]
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\section{Bayesian Supervised Learning}
+\input{sections/BayesianSupervisedLearning.tex}
+
+\section{Variational Inference}
+\input{sections/VariationalInference.tex}
+
+\section{Gaussian Processes}
+\input{sections/GaussianProcesses.tex}
+
+\section{Implicit Processes}
+\input{sections/ImplicitProcesses.tex}
+
+\section{Sparse Linearized Implicit Processes}
+\input{sections/SparseLinearized.tex}
+
+\section{Experiments}
+\input{sections/Experiments.tex}
+
+
+\section{Conclusions}
+\begin{frame}{Conclusions}
+    \begin{itemize}[<+->]
+    \item The Taylor approximation of order 1 is \textbf{not really close} to the exact distribution in the tested cases.
+    \item \textbf{However}, preliminary results show that the predictive distribution close to the known points \textbf{is good enough} to encourage more research and testing.
+    \item If the Taylor approximation results usable in practise, the proposed method would \textbf{avoid some of the problems of other function-space approaches}.
+    \item The family of priors on which the Taylor approximation is good enough needs to be studied.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+  Thank you for your attention
+\end{frame}
+
+\end{document}
