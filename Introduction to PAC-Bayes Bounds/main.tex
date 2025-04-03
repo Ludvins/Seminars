@@ -15,6 +15,7 @@
 \usepackage{booktabs} % for professional tables
 \usepackage{tabularx}
 \usepackage{multirow}
+\usepackage{centernot}
 
 \usefonttheme{professionalfonts} % required for mathspec
 \usepackage{mathspec}
@@ -44,7 +45,7 @@
     \end{frame}
 
     \begin{frame}{Notation I}
-        The objective is to \textit{\textbf{learn from examples to assign labels to objects}}. %Objects can be images, videos, e-mails... 
+        The objective is to \textit{\textbf{learn from examples to assign labels to objects}}. \pause
         \begin{itemize}[<+->]
             \item The set of all possible objects will be denoted by \(\mathcal{X} \subset \mathbb{R}^d\) . 
             \item The set of labels will be denoted by \(\mathcal{Y}\).
@@ -61,37 +62,39 @@
     \end{frame}
 
     \begin{frame}{Notation II}
-        We want to \textbf{predict the label of objects} in the future.
+        We want to \textbf{predict the label of objects} in the future.\pause
         \begin{itemize}[<+->]
             \item Let \(P\) denote the probability distribution over \(\mathcal{X} \times \mathcal{Y}\). 
-            \item The expected mistake (generalization risk) is 
+            \item The \textbf{expected error} (generalization risk) is 
             \[
-                R(f) := \mathbb{E}_{(X, Y) \sim P}[\ell(f(x), y)]\,, \quad R(\theta) := R(f_\theta)\,.
+                R(f) := \mathbb{E}_{(X, Y) \sim P}[\ell(f(X), Y)]\,, \quad R(\theta) := R(f_\theta)\,.
             \]
             \item Observations, \(S := [(X_1, Y_1),\dots , (X_n, Y_n)] \) are i.i.d from \(P\).
-            \item The \textbf{empirical risk} \(r(\theta) = \tfrac{1}{n}\sum_{i=1}^n \ell(f_\theta(X_i), Y_i) = \tfrac{1}{n}\sum_{i=1}^n \ell_i(\theta)\)\,.
-            \[\mathbb{E}_{S}[r(\theta)] = R(\theta)\,.\]
+            \item The \textbf{empirical risk}:
+            \[r(\theta) = \tfrac{1}{n}\sum_{i=1}^n \ell(f_\theta(X_i), Y_i), \quad \mathbb{E}_{S}[r(\theta)] = R(\theta)\,.\]
         \end{itemize}
     \end{frame}
     \begin{frame}{Notation III}
             An \textbf{estimator} takes observations and returns a predictor:
             \[
                 \hat{\theta}: \bigcup_{n=1}^{\infty}(\mathcal{X} \times \mathcal{Y})^n \to \Theta\,.
-            \]
-            For example, the \textbf{empirical risk minimizer}:
+            \]\pause
+            For example, the \textbf{empirical risk minimizer (ERM)}:
             \[
-                \hat{\theta}_{ERM} = \argmin_{\theta \in \Theta} r(\theta)\,.
+                \hat{\theta}_{ERM} = \argmin_{\theta \, \in \, \Theta} r(\theta) = \argmin_{\theta \, \in\,  \Theta} \tfrac{1}{n}\sum_{i=1}^n \ell(f_\theta(X_i), Y_i)\,.
             \]
     \end{frame}
 
     \begin{frame}{PAC Bounds}
-        \textbf{However}, we want to minimize \(R\), not \(r\). \pause
+        \[
+        \hat{\theta}_{ERM} = \argmin_{\theta \, \in \, \Theta} r(\theta) \centernot \implies \hat{\theta}_{ERM} = \argmin_{\theta \, \in \, \Theta} R(\theta)\,.
+        \]
 
         ERM relies on the \textit{hope} that ``\textit{these two functions are not so different}''. \pause
 
         \textbf{Proposition 1.} If \(\ell(\cdot, \cdot)\) is \textbf{bounded} in [0, C]; for any \(\theta \in \Theta\) and \(\delta \in (0,1)\), 
         \[
-        \mathbb{P}_{S}\left[ R(\theta) > r(\theta) + C\sqrt{\frac{\log \frac{1}{\delta}}{2n}} \right] \leq \delta \,.
+        \mathbb{P}_{S}\left[ R(\theta) > r(\theta) + C\sqrt{\frac{\log \frac{1}{\delta}}{2n}} \right] \leq \delta \pause \iff \mathbb{P}_{S}\left[ R(\theta) \leq r(\theta) + C\sqrt{\frac{\log \frac{1}{\delta}}{2n}} \right] \geq 1- \delta\,.
         \]  
         \textit{Proof. } Hoeffding’s inequality to \(U_i = \mathbb{E}[\ell_i(\theta)] - \ell_i(\theta)\).
     \end{frame}
@@ -185,11 +188,9 @@
                 f_{\hat{\rho}}(\cdot) := \mathbb{E}_{\theta \sim \hat{\rho}}[f_\theta(\cdot)]
             \]
         \end{enumerate}
-
-        Randomized estimators include Bayesian estimators, variational inference and ensemble methods.
     \end{frame}
     \begin{frame}
-        With PAC-Bayes Bounds, we will obtain bounds related to
+        With PAC-Bayes Bounds, we can obtain bounds related to
         \begin{enumerate}
             \item The risk of a randomized estimator, \(R(\tilde{\theta})\).
             \item The average risk of randomized estimators, \(\mathbb{E}_{\theta \sim \hat{\rho}}[R(\theta)]\).
@@ -375,5 +376,38 @@
     \printbibliography[heading=none]
     \end{frame}
 
+    \begin{frame}{Kullback-Leibler Divergence}
+
+    Given two probability measures \(\mu\) and \(\nu\) in \(\mathcal{P}(\Theta)\), the Kullback-Leibler (or simply KL) divergence between \(\mu\) and \(\nu\) is defined as
+    \[
+    \text{KL}(\mu| \nu) = \int \log \left(\frac{d\mu}{d\nu}(\theta) \right) \mu d(\theta)
+    \]
+    Under absolutely continuity assumptions:
+    \[
+    \text{KL}(\mu| \nu) = \int \mu (\theta) \log \left(\frac{\mu(\theta)}{\nu(\theta)} \right) \ d(\theta)\,.
+    \]
+    \end{frame}
+
+    \begin{frame}{Hoeffding's Inequality}
+        Let \(X_1, X_2, \dots, X_n\) be independent random variables such that \(a_i \leq X_i \leq b_i\) almost surely. Then, consider
+        \[
+            S_n = X_1 + \dots + X_n\,.
+        \]
+        It verifies that
+        \[
+        P(S_n - \mathbb{E}[S_n]) \geq t) \leq \exp \left( \frac{2t^2}{\sum_{i = 1}^n (b_i - a_i)^2} \right)\,.
+        \]
+    \end{frame}
+
+    \begin{frame}{Donsker and Varadhan’s Variational Formula}
+        For any measurable, bounded function \(h : \Theta \to \mathbb{R}\) we have:
+        \[
+            \log \mathbb{E}_{\theta \sim \pi}[e^{h(\theta)}] = \sup_{\rho \, \in\, \mathcal{P}(\Theta)} \left[ \mathbb{E}_{\theta \sim \rho}[h(\theta)] - \text{KL}(\rho | \pi) \right]\,.
+        \]
+        It verifies that
+        \[
+        P(S_n - \mathbb{E}[S_n]) \geq t) \leq \exp \left( \frac{2t^2}{\sum_{i = 1}^n (b_i - a_i)^2} \right)\,.
+        \]
+    \end{frame}
     
 \end{document}

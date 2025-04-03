@@ -6,3 +6,4 @@ Repository containing open-access Seminars. Contains:
 2. Variational Linearized Laplace Approximation for Bayesian Deep Learning. March 15, 2023.
 3. Variational Inference in RKHS for Uncertainty Estimation in Deep Learning. April 17, 2024.
 4. Fixed-Mean Gaussian Processes for Post-hoc Bayesian Deep Learning. October 21, 2024.
+5. An Introduction to Pac-Bayes Bounds. April 2, 2025.
